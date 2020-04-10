@@ -22,7 +22,7 @@ public class ParseFile {
     }
 
     public synchronized String getContent() throws IOException {
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
         try (BufferedReader input = new BufferedReader(new FileReader(file))) {
             input.lines().forEach(output::append);
         }
@@ -30,7 +30,7 @@ public class ParseFile {
     }
 
     public synchronized String getContentWithoutUnicode() throws IOException {
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
         try (BufferedReader i = new BufferedReader(new FileReader(file))) {
             int data;
             while ((data = i.read()) > 0) {
