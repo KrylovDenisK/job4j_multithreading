@@ -1,8 +1,12 @@
 package ru.job4j.cuncurrent.synchronization;
 
-import java.io.*;
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 
+import java.io.*;
+@ThreadSafe
 public class ParseFile {
+    @GuardedBy("this")
     private File file;
 
     public ParseFile(File file) {
@@ -17,7 +21,7 @@ public class ParseFile {
         return file;
     }
 
-    public String getContent() throws IOException {
+    public synchronized String getContent() throws IOException {
         StringBuffer output = new StringBuffer();
         try (BufferedReader input = new BufferedReader(new FileReader(file))) {
             input.lines().forEach(output::append);
@@ -25,7 +29,7 @@ public class ParseFile {
         return output.toString();
     }
 
-    public String getContentWithoutUnicode() throws IOException {
+    public synchronized String getContentWithoutUnicode() throws IOException {
         StringBuffer output = new StringBuffer();
         try (BufferedReader i = new BufferedReader(new FileReader(file))) {
             int data;
@@ -38,7 +42,7 @@ public class ParseFile {
         return output.toString();
     }
 
-    public void saveContent(String content) throws IOException {
+    public synchronized void saveContent(String content) throws IOException {
         try (PrintWriter o = new PrintWriter(file)) {
             o.write(content);
         }
